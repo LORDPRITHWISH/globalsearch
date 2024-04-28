@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import fetch as ff
 import uvicorn
 
+serches = []
+
 app = FastAPI()
 
 origins = [
@@ -24,6 +26,7 @@ def read_root():
 
 @app.post('/search')
 async def receive_integers(search:str):
+
     res = ff.searchcall(search)
     print(*res,sep="\n\n")
     return res

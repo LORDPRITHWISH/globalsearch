@@ -5,12 +5,13 @@ import json
 
 def searchcall(searches:str):
     engines = ["google", "duckduckgo", "bing"]
-    link = 'https://serpapi.com/search.json?engine={}&q={}&google_domain=google.com&gl=us&hl=en&api_key=df76bd9ff6d4d2d580b10d30f077415456812407eb1e66a3124c2e29754a8666'
+    key="2765e80d238e937473972c3180ab6301bccb9ac394ae2054211f0ddcf00ddeae"
+    link = 'https://serpapi.com/search.json?engine={}&q={}&google_domain=google.com&gl=us&hl=en&api_key={}'
     # searches = "erotica"
     res = []
 
     for eng in engines:
-        res.append(requests.get(link.format(eng, searches)).json())
+        res.append(requests.get(link.format(eng, searches,key)).json())
 
     filtered = []
 
