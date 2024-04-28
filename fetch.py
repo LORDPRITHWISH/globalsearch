@@ -1,18 +1,40 @@
 import requests
 import json
 
+# 2765e80d238e937473972c3180ab6301bccb9ac394ae2054211f0ddcf00ddeae
+# df76bd9ff6d4d2d580b10d30f077415456812407eb1e66a3124c2e29754a8666
 
 
 def searchcall(searches:str):
     engines = ["google", "duckduckgo", "bing"]
-    key="2765e80d238e937473972c3180ab6301bccb9ac394ae2054211f0ddcf00ddeae"
+    
+    key=["df76bd9ff6d4d2d580b10d30f077415456812407eb1e66a3124c2e29754a8666",
+         "2765e80d238e937473972c3180ab6301bccb9ac394ae2054211f0ddcf00ddeae"]
+    
+
     link = 'https://serpapi.com/search.json?engine={}&q={}&google_domain=google.com&gl=us&hl=en&api_key={}'
-    # searches = "erotica"
     res = []
 
+    i=0;
     for eng in engines:
-        res.append(requests.get(link.format(eng, searches,key)).json())
+        ret = requests.get(link.format(eng, searches,key[i])).json()
+        while ret.get('error'):
+            print(ret)
+            if ret.get('error')=="Your account has run out of searches.":
+                if i<len(key)-1:
+                    i+=1
+                    ret = requests.get(link.format(eng, searches,key[i])).json()
+                else:
+                    print(ret,"its over")
+                    return (ret,"its over")
+            else:
+                print("error")
+                return [ret]
 
+        print(ret)
+        res.append(ret)
+
+    # print(*res,sep="\n\n")
     filtered = []
 
     for r in res:
@@ -50,4 +72,5 @@ def searchcall(searches:str):
     return json_output
 
 
+# searchcall("erotica")
 # AIzaSyDJuY7-IpeQYUDcc1iQiABHx-DHvoa1lJU
